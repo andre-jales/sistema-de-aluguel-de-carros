@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Contrato - Sistema de Aluguel de Carros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/dashboard}">Sistema de Aluguel de Carros</a>
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text me-3">
+                    Bem-vindo, <span th:text="${#authentication.name}"></span>!
+                </span>
+                <form th:action="@{/logout}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1>Detalhes do Contrato</h1>
+                    <div>
+                        <a th:href="@{/contracts/edit/{id}(id=${contract.id})}" class="btn btn-warning me-2">
+                            <i class="bi bi-pencil"></i> Editar
+                        </a>
+                        <a th:href="@{/contracts}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Voltar
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card detail-card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Informações do Contrato</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Número do Contrato:</strong>
+                                        <p th:text="${contract.contractNumber}" class="text-muted"></p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Status:</strong>
+                                        <p>
+                                            <span th:if="${contract.active}" class="badge bg-success">Ativo</span>
+                                            <span th:unless="${contract.active}"
+                                                class="badge bg-secondary">Inativo</span>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Cliente:</strong>
+                                        <p th:text="${contract.order.customer.name}" class="text-muted"></p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Automóvel:</strong>
+                                        <p th:text="${contract.order.vehicle.brand + ' ' + contract.order.vehicle.model}"
+                                            class="text-muted"></p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Período:</strong>
+                                        <p th:text="${#temporals.format(contract.startDate, 'dd/MM/yyyy') + ' - ' + #temporals.format(contract.endDate, 'dd/MM/yyyy')}"
+                                            class="text-muted"></p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Valor Total:</strong>
+                                        <p th:text="${#numbers.formatCurrency(contract.totalValue)}" class="text-muted">
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Valor Entrada:</strong>
+                                        <p th:text="${#numbers.formatCurrency(contract.downPayment)}"
+                                            class="text-muted"></p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Valor das Parcelas:</strong>
+                                        <p th:text="${#numbers.formatCurrency(contract.installmentValue)}"
+                                            class="text-muted"></p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Quantidade de Parcelas:</strong>
+                                        <p th:text="${contract.installmentsQuantity}" class="text-muted"></p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Data de Criação:</strong>
+                                        <p th:text="${#temporals.format(contract.creationDate, 'dd/MM/yyyy HH:mm')}"
+                                            class="text-muted"></p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <strong>Termos:</strong>
+                                        <p th:text="${contract.terms}" class="text-muted"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mt-4" th:if="${contract.creditContract != null}">
+                            <div class="card-header">
+                                <h5 class="mb-0">Contrato de Crédito</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Número:</strong>
+                                        <p th:text="${contract.creditContract.creditContractNumber}" class="text-muted">
+                                        </p>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Banco:</strong>
+                                        <p th:text="${contract.creditContract.bank}" class="text-muted"></p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Agência:</strong>
+                                        <p th:text="${contract.creditContract.agency}" class="text-muted"></p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Conta:</strong>
+                                        <p th:text="${contract.creditContract.account}" class="text-muted"></p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Valor Financiado:</strong>
+                                        <p th:text="${#numbers.formatCurrency(contract.creditContract.financedValue)}"
+                                            class="text-muted"></p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Taxa de Juros:</strong>
+                                        <p th:text="${#numbers.formatPercent(contract.creditContract.interestRate)}"
+                                            class="text-muted"></p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Prazo de Pagamento:</strong>
+                                        <p th:text="${contract.creditContract.paymentTerm + ' meses'}"
+                                            class="text-muted"></p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Valor da Parcela:</strong>
+                                        <p th:text="${#numbers.formatCurrency(contract.creditContract.installmentValue)}"
+                                            class="text-muted"></p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Data de Vencimento:</strong>
+                                        <p th:text="${#temporals.format(contract.creditContract.dueDate, 'dd/MM/yyyy')}"
+                                            class="text-muted"></p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Status:</strong>
+                                        <p>
+                                            <span th:if="${contract.creditContract.approved}"
+                                                class="badge bg-success">Aprovado</span>
+                                            <span th:unless="${contract.creditContract.approved}"
+                                                class="badge bg-warning">Pendente</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Ações</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-grid gap-2">
+                                    <a th:href="@{/contracts/edit/{id}(id=${contract.id})}" class="btn btn-warning">
+                                        <i class="bi bi-pencil"></i> Editar Contrato
+                                    </a>
+                                    <a th:href="@{/contracts/credit/{id}(id=${contract.id})}" class="btn btn-primary"
+                                        th:if="${contract.creditContract == null}">
+                                        <i class="bi bi-credit-card"></i> Gerar Crédito
+                                    </a>
+                                    <a th:href="@{/contracts/cancel/{id}(id=${contract.id})}" class="btn btn-danger"
+                                        th:if="${contract.active}">
+                                        <i class="bi bi-x-circle"></i> Cancelar Contrato
+                                    </a>
+                                    <a th:href="@{/contracts}" class="btn btn-outline-secondary">
+                                        <i class="bi bi-arrow-left"></i> Voltar à Lista
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/script.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos - Sistema de Aluguel de Carros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/dashboard}">Sistema de Aluguel de Carros</a>
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text me-3">
+                    Bem-vindo, <span th:text="${#authentication.name}"></span>!
+                </span>
+                <form th:action="@{/logout}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1>Pedidos</h1>
+                    <a th:href="@{/orders/new}" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Novo Pedido
+                    </a>
+                </div>
+
+                <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <span th:text="${success}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
+                <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <span th:text="${error}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Cliente</th>
+                                        <th>Automóvel</th>
+                                        <th>Período</th>
+                                        <th>Valor Total</th>
+                                        <th>Status</th>
+                                        <th>Agente</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="order : ${orders}">
+                                        <td th:text="${order.id}"></td>
+                                        <td th:text="${order.customer.name}"></td>
+                                        <td th:text="${order.vehicle.brand + ' ' + order.vehicle.model}"></td>
+                                        <td
+                                            th:text="${#temporals.format(order.startDate, 'dd/MM/yyyy') + ' - ' + #temporals.format(order.endDate, 'dd/MM/yyyy')}">
+                                        </td>
+                                        <td th:text="${#numbers.formatCurrency(order.totalValue)}"></td>
+                                        <td>
+                                            <span th:switch="${order.status}" class="badge">
+                                                <span th:case="PENDING" class="badge bg-warning">Pendente</span>
+                                                <span th:case="EVALUATING" class="badge bg-info">Avaliando</span>
+                                                <span th:case="APPROVED" class="badge bg-success">Aprovado</span>
+                                                <span th:case="REJECTED" class="badge bg-danger">Reprovado</span>
+                                                <span th:case="CANCELLED" class="badge bg-secondary">Cancelado</span>
+                                                <span th:case="CONTRACT_GENERATED" class="badge bg-primary">Contrato
+                                                    Gerado</span>
+                                            </span>
+                                        </td>
+                                        <td th:text="${order.agent != null ? order.agent.name : '-'}"></td>
+                                        <td>
+                                            <a th:href="@{/orders/details/{id}(id=${order.id})}"
+                                                class="btn btn-sm btn-outline-info btn-action">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a th:href="@{/orders/edit/{id}(id=${order.id})}"
+                                                class="btn btn-sm btn-outline-warning btn-action"
+                                                th:if="${order.status.name() == 'PENDING'}">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a th:href="@{/orders/assign-agent/{id}(id=${order.id})}"
+                                                class="btn btn-sm btn-outline-primary btn-action"
+                                                th:if="${order.status.name() == 'PENDING'}"
+                                                sec:authorize="hasAnyRole('ADMIN', 'AGENT')">
+                                                <i class="bi bi-person-plus"></i>
+                                            </a>
+                                            <a th:href="@{/orders/approve/{id}(id=${order.id})}"
+                                                class="btn btn-sm btn-outline-success btn-action"
+                                                th:if="${order.status.name() == 'EVALUATING'}"
+                                                sec:authorize="hasAnyRole('ADMIN', 'AGENT')">
+                                                <i class="bi bi-check"></i>
+                                            </a>
+                                            <a th:href="@{/orders/reject/{id}(id=${order.id})}"
+                                                class="btn btn-sm btn-outline-danger btn-action"
+                                                th:if="${order.status.name() == 'EVALUATING'}"
+                                                sec:authorize="hasAnyRole('ADMIN', 'AGENT')">
+                                                <i class="bi bi-x"></i>
+                                            </a>
+                                            <a th:href="@{/orders/cancel/{id}(id=${order.id})}"
+                                                class="btn btn-sm btn-outline-secondary btn-action"
+                                                th:if="${order.status.name() != 'CONTRACT_GENERATED' and order.status.name() != 'CANCELLED'}"
+                                                sec:authorize="hasAnyRole('ADMIN', 'AGENT', 'CUSTOMER')">
+                                                <i class="bi bi-x-circle"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/script.js}"></script>
+</body>
+
+</html>
