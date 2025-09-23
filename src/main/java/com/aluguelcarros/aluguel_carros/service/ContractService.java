@@ -71,7 +71,6 @@ public class ContractService {
         Contract contract = new Contract(order, agent, contractNumber, downPayment, installments, terms);
         contract = contractRepository.save(contract);
 
-        // Update order status
         order.setStatus(OrderStatus.CONTRACT_GENERATED);
         order.setUpdateDate(LocalDateTime.now());
         orderRepository.save(order);
@@ -123,7 +122,6 @@ public class ContractService {
         contract.setInstallmentsQuantity(updatedContract.getInstallmentsQuantity());
         contract.setTerms(updatedContract.getTerms());
 
-        // Recalculate installment value
         BigDecimal installmentValue = contract.getTotalValue()
                 .subtract(contract.getDownPayment())
                 .divide(BigDecimal.valueOf(contract.getInstallmentsQuantity()));
@@ -139,7 +137,6 @@ public class ContractService {
         contract.setActive(false);
         contractRepository.save(contract);
 
-        // Release car
         Order order = contract.getOrder();
         Vehicle vehicle = order.getVehicle();
         vehicle.setAvailable(true);

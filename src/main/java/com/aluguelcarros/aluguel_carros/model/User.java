@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "\"user\"")
 public class User implements UserDetails {
 
     @Id
@@ -22,7 +22,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -37,6 +37,7 @@ public class User implements UserDetails {
 
     // Constructors
     public User() {
+        this.active = true;
     }
 
     public User(String username, String password, String email, String name, UserType userType) {

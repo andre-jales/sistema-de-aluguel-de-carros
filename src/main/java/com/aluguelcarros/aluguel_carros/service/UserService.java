@@ -3,6 +3,7 @@ package com.aluguelcarros.aluguel_carros.service;
 import com.aluguelcarros.aluguel_carros.model.User;
 import com.aluguelcarros.aluguel_carros.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,8 +19,14 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserService(@Lazy PasswordEncoder passwordEncoder, UserRepository userRepository) {
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -47,7 +54,6 @@ public class UserService implements UserDetailsService {
             throw new RuntimeException("Já existe um usuário com este email");
         }
 
-        // Criptografar senha
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -56,13 +62,11 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        // Verificar se username já existe em outro usuário
         if (!user.getUsername().equals(updatedUser.getUsername()) &&
                 userRepository.existsByUsername(updatedUser.getUsername())) {
             throw new RuntimeException("Já existe um usuário com este username");
         }
 
-        // Verificar se email já existe em outro usuário
         if (!user.getEmail().equals(updatedUser.getEmail()) &&
                 userRepository.existsByEmail(updatedUser.getEmail())) {
             throw new RuntimeException("Já existe um usuário com este email");
@@ -74,8 +78,7 @@ public class UserService implements UserDetailsService {
         user.setUserType(updatedUser.getUserType());
         user.setActive(updatedUser.getActive());
 
-        // Se a senha foi alterada, criptografar
-        if (!updatedUser.getPassword().isEmpty()) {
+        if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         }
 

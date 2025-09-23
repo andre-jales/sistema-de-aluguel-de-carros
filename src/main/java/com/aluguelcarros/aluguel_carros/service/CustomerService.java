@@ -44,13 +44,11 @@ public class CustomerService {
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
-        // Verificar se CPF já existe em outro cliente
         if (!customer.getCpf().equals(updatedCustomer.getCpf()) &&
                 customerRepository.existsByCpf(updatedCustomer.getCpf())) {
             throw new RuntimeException("Já existe um cliente cadastrado com este CPF");
         }
 
-        // Verificar se email já existe em outro cliente
         if (!customer.getEmail().equals(updatedCustomer.getEmail()) &&
                 customerRepository.existsByEmail(updatedCustomer.getEmail())) {
             throw new RuntimeException("Já existe um cliente cadastrado com este email");

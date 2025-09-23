@@ -46,13 +46,11 @@ public class AgentService {
         Agent agent = agentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Agent not found"));
 
-        // Check if CPF already exists in another agent
         if (!agent.getCpf().equals(updatedAgent.getCpf()) &&
                 agentRepository.existsByCpf(updatedAgent.getCpf())) {
             throw new RuntimeException("An agent with this CPF already exists");
         }
 
-        // Check if email already exists in another agent
         if (!agent.getEmail().equals(updatedAgent.getEmail()) &&
                 agentRepository.existsByEmail(updatedAgent.getEmail())) {
             throw new RuntimeException("An agent with this email already exists");

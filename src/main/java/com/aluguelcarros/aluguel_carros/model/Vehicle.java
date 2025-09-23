@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
-@Table(name = "automoveis")
+@Table(name = "vehicle")
 public class Vehicle {
 
     @Id

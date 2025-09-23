@@ -50,7 +50,6 @@ public class EmployerService {
         Employer employer = employerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employer not found"));
 
-        // Check if CNPJ already exists in another employer
         if (!employer.getCnpj().equals(updatedEmployer.getCnpj()) &&
                 employerRepository.existsByCnpj(updatedEmployer.getCnpj())) {
             throw new RuntimeException("An employer with this CNPJ already exists");

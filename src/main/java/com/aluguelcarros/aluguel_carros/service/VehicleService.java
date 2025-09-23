@@ -53,7 +53,6 @@ public class VehicleService {
         Vehicle vehicle = vehicleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Automóvel não encontrado"));
 
-        // Verificar se placa já existe em outro automóvel
         if (!vehicle.getLicensePlate().equals(updatedVehicle.getLicensePlate()) &&
                 vehicleRepository.existsByLicensePlate(updatedVehicle.getLicensePlate())) {
             throw new RuntimeException("Já existe um automóvel cadastrado com esta placa");

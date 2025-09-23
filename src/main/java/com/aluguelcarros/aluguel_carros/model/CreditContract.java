@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "contratos_credito")
+@Table(name = "credit_contract")
 public class CreditContract {
 
     @Id

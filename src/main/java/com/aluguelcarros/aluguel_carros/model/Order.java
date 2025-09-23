@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "pedidos")
+@Table(name = "\"order\"")
 public class Order {
 
     @Id
