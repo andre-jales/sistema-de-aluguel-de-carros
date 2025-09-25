@@ -60,6 +60,8 @@ src/
 ![Diagrama de Componentes](https://github.com/user-attachments/assets/43e2c7dd-619c-4214-9f27-48bdec77ceef)
 
 ### Diagrama de implantação
+<img width="1238" height="931" alt="image" src="https://github.com/user-attachments/assets/c5cc6c1a-f4fd-4373-a2c9-6b01331dc701" />
+
 ---
 
 ## Como Executar
