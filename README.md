@@ -48,17 +48,17 @@ src/
 ## Diagramas
 
 ### Diagrama de Casos de Uso
-
-O diagrama de casos de uso descreve as funcionalidades do sistema e os atores envolvidos:
-
 ![Diagrama de Casos de Uso](images/diagrama-casos-de-uso.png)
 
-
 ### Diagrama de Classes
+![Diagrama de Classes](https://github.com/user-attachments/assets/c4f80e8c-3e42-4efe-bf4d-39b6499a2549)
 
 ### Diagrama de Pacotes
+![Diagrama de Pacotes](https://github.com/user-attachments/assets/598530d2-a271-4230-bdb2-3dd65ee85783)
 
 ### Diagrama de Componentes
+![Diagrama de Componentes](https://github.com/user-attachments/assets/43e2c7dd-619c-4214-9f27-48bdec77ceef)
+
 ---
 
 ## Como Executar
