@@ -19,10 +19,10 @@ public class AuthController {
             @RequestParam(value = "logout", required = false) String logout,
             Model model) {
         if (error != null) {
-            model.addAttribute("error", "Invalid username or password!");
+            model.addAttribute("error", "Usuário ou senha inválidos!");
         }
         if (logout != null) {
-            model.addAttribute("message", "Logout successful!");
+            model.addAttribute("message", "Logout com sucesso!");
         }
         return "login";
     }
@@ -37,7 +37,7 @@ public class AuthController {
     public String register(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
         try {
             userService.save(user);
-            redirectAttributes.addFlashAttribute("success", "User registered successfully! Please login to continue.");
+            redirectAttributes.addFlashAttribute("success", "Usuário registrado com sucesso! Por favor, faça login para continuar.");
             return "redirect:/login";
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
