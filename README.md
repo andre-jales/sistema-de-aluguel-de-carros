@@ -6,10 +6,43 @@ O sistema tem como objetivo apoiar a gestão de aluguéis de automóveis, permit
 
 ---
 
+## Funcionalidades
+
+- Autenticação e controle de acesso.
+- Cadastro e gerenciamento de:
+  - Clientes (`Customer`)
+  - Funcionários (`Employer`)
+  - Agentes (`Agent`)
+  - Veículos (`Vehicle`)
+- Gestão de pedidos (`Order`) e contratos de aluguel (`Contract` e `CreditContract`).
+- Painel administrativo com telas para visualizar, criar e editar registros.
+- Integração com **Thymeleaf** para renderização de páginas HTML.
+
+## Tecnologias Utilizadas
+
+- **Java 17+**
+- **Spring Boot**
+  - Spring MVC
+  - Spring Data JPA
+  - Spring Security
+- **Thymeleaf**
+- **Hibernate**
+
 ## Estrutura do Projeto
-
-O projeto será desenvolvido em **Java**, utilizando a arquitetura **MVC** e seguindo os requisitos e diagramas levantados nas sprints do LAB02.
-
+```
+src/
+├── main/
+│ ├── java/com/aluguelcarros/aluguel_carros/
+│ │ ├── controller/ # Controllers REST e MVC
+│ │ ├── model/ # Entidades do sistema
+│ │ ├── repository/ # Interfaces JPA
+│ │ ├── service/ # Regras de negócio
+│ │ └── config/ # Configurações (ex: segurança)
+│ └── resources/
+│ ├── templates/ # Páginas HTML (Thymeleaf)
+│ └── application.properties
+└── test/ # Testes automatizados
+```
 ---
 
 ## Diagramas
@@ -20,11 +53,40 @@ O diagrama de casos de uso descreve as funcionalidades do sistema e os atores en
 
 ![Diagrama de Casos de Uso](images/diagrama-casos-de-uso.png)
 
+
+### Diagrama de Classes
+
+### Diagrama de Pacotes
+
+### Diagrama de Componentes
 ---
 
 ## Como Executar
 
-Em breve serão incluídas instruções de execução do projeto.
+- Java 17+
+- Maven
+
+### Passos
+1. Clone este repositório:
+   ```bash
+   git clone https://github.com/andre-jales/sistema-de-aluguel-de-carros
+   cd sistema-de-aluguel-de-carros
+   ```
+
+2. Compile e rode a aplicação:
+   ```bash
+    mvn clean install
+   ```
+
+3. Execute a aplicação
+   ```bash
+    mvn spring-boot:run
+   ```
+
+4. Acesso no navegador
+   ```bash
+    http://localhost:8080
+   ```
 
 ---
 
