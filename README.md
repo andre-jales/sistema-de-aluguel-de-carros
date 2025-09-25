@@ -48,7 +48,7 @@ src/
 ## Diagramas
 
 ### Diagrama de Casos de Uso
-![Diagrama de Casos de Uso](images/diagrama-casos-de-uso.png)
+![Diagrama de Casos de Uso](https://github.com/user-attachments/assets/f6f494d9-f959-4e13-b0b6-45c2239a2585)
 
 ### Diagrama de Classes
 ![Diagrama de Classes](https://github.com/user-attachments/assets/c4f80e8c-3e42-4efe-bf4d-39b6499a2549)
@@ -59,6 +59,7 @@ src/
 ### Diagrama de Componentes
 ![Diagrama de Componentes](https://github.com/user-attachments/assets/43e2c7dd-619c-4214-9f27-48bdec77ceef)
 
+### Diagrama de implantação
 ---
 
 ## Como Executar
